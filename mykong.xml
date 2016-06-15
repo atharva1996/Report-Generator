@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<sqlquery>
+	<major>
+		<sql>select * from employees</sql>
+		<location>/Users/atharvapatil/Desktop/testing/</location>
+	</major>
+	
+	<major>
+		<sql>select * from students</sql>
+		<location>/Users/atharvapatil/Desktop/testing/</location>
+	</major>
+	
+</sqlquery>
