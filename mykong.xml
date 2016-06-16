@@ -1,13 +1,15 @@
 <?xml version="1.0"?>
 <sqlquery>
 	<major>
+		<title>Employee Report</title>
 		<sql>select * from employees</sql>
-		<location>/Users/atharvapatil/Desktop/testing/</location>
+		<location>/Users/atharvapatil/Desktop/testing/demo.xlsx</location>
 	</major>
 	
 	<major>
+		<title>Students Report</title>
 		<sql>select * from students</sql>
-		<location>/Users/atharvapatil/Desktop/testing/</location>
+		<location>/Users/atharvapatil/Desktop/hello.xlsx</location>
 	</major>
 	
 </sqlquery>
