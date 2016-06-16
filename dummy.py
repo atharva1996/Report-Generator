@@ -3,11 +3,6 @@ import xlsxwriter
 import mysql.connector  
 import datetime  
 
-db = mysql.connector.connect(user='root', password='',
-                              host='localhost',
-                              database='squareinch')
-
-cursor = db.cursor()
 
 
 
@@ -17,6 +12,25 @@ from xml.dom import minidom
 doc = minidom.parse("mykong.xml")
 
 majors = doc.getElementsByTagName("major")
+
+get_user = doc.getElementsByTagName("user")[0]
+get_pwd = doc.getElementsByTagName("password")[0]
+get_db = doc.getElementsByTagName("dbname")[0]
+get_host = doc.getElementsByTagName("host")[0]
+user = get_user.firstChild.data
+pwd = get_pwd.firstChild.data
+dbn = get_db.firstChild.data
+host = get_host.firstChild.data
+
+
+
+db = mysql.connector.connect(user=user, password=pwd,
+                              host=host,
+                              database=dbn)
+                              
+                              
+
+cursor = db.cursor()
 
 for major in majors:
 
@@ -42,6 +56,11 @@ for major in majors:
           worksheet.set_column(0,6,5)
           bold = workbook.add_format({'bold': True})
           date_format = workbook.add_format({'num_format': 'mmmm d yyyy'})
+          time_format = workbook.add_format({'num_format': 'hh:mm:ss'})
+          timestamp_format = workbook.add_format({'num_format': 'dd/mm/yy hh:mm:ss'})
+
+
+
           worksheet.write(0,0,heading,bold)
       
 
@@ -59,6 +78,11 @@ for major in majors:
             for cols in rows:
                 if type(result[n][col]) is datetime.date:
                   worksheet.write(row,col,result[n][col],date_format)
+                if type(result[n][col]) is datetime.timedelta :
+                  worksheet.write(row,col,result[n][col],time_format)
+                if type(result[n][col]) is datetime.datetime:
+                  worksheet.write(row,col,result[n][col],timestamp_format)
+
                 else:
                   worksheet.write(row,col,result[n][col])
                 col = col + 1

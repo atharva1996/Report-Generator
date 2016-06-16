@@ -1,5 +1,11 @@
 <?xml version="1.0"?>
 <sqlquery>
+	<connection>
+		<user>atharva</user>
+		<password>atharva123</password>
+		<host>localhost</host>
+		<dbname>squareinch</dbname>
+	</connection>
 	<major>
 		<title>Employee Report</title>
 		<sql>select * from employees</sql>
