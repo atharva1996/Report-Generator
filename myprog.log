@@ -1,0 +1,6 @@
+select * from employees
+[(u'1', u'Karan', u'Parle', u'ascwcw', u'1233'), (u'2', u'Atharva', u'wdmskcn', u'qknqwjndqw', u'121213'), (u'3', u'hbyb', u'acsaas', u'ascsa', u'3232'), (u'4', u'ecc', u'ascecwc', u'sxacewfwe', u'124322'), (u'5', u'cwecwec', u'qwcewcw', u'cfsdverwv', u'64564554')]
+select * from students
+[(1, u'karan', u'SAsa', u'M', datetime.datetime(2016, 6, 16, 0, 0)), (2, u'Atharva', u'ASDAS', u'SDA', datetime.datetime(2016, 6, 16, 0, 0)), (3, u'dasd', u'dasd', u'asds', datetime.datetime(2016, 6, 16, 0, 0)), (4, u'sad', u'sad', u'asd', datetime.datetime(2016, 6, 16, 8, 22, 35)), (7, u'324', u'qwe', u'qwe', datetime.datetime(2016, 6, 2, 9, 17, 20))]
+database closed
+fine
