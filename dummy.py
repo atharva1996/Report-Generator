@@ -7,11 +7,10 @@ db = mysql.connector.connect(user='root', password='',
                               database='squareinch')
 
 cursor = db.cursor()
-row=0
-workbook = xlsxwriter.Workbook('demo.xlsx')
-worksheet = workbook.add_worksheet()
 
-worksheet.set_column('A:A', 20)
+
+workbook = xlsxwriter.Workbook('demo.xlsx')
+
 
 from xml.dom import minidom
 
@@ -24,16 +23,33 @@ for major in majors:
 	query=sql.firstChild.data 
 		
 	try:	
-    		print query
-    		cursor.execute(query)
-   		result = cursor.fetchall()
-   		worksheet.write(row,0,result[0][0])
-   		row = row + 1;
-   		print result[0][0]
+          print query
+          
+          cursor.execute(query)
+          
+          result = cursor.fetchall()
+          print result
+          worksheet = workbook.add_worksheet()
+          worksheet.set_column('A:A', 20)
+          row=0
+          col=0
+          for rows in result:
+            col=0
+            
+            for cols in rows:
 
+                worksheet.write(row,col,result[row][col])
+                col = col + 1
+                
+
+            row = row + 1
+          
+   	
     	except Exception as inst:
-	 		print "database & workbook is closing due to Exception"
-	 		db.close()
+	 		  print "database & workbook is closing due to Exception"
+        
+      
+      
 
 workbook.close()
 db.close()
