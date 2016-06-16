@@ -2,8 +2,8 @@ import MySQLdb
 import xlsxwriter
 import mysql.connector  
 import datetime  
-
-
+import logging
+import sys
 
 
 
@@ -21,7 +21,8 @@ user = get_user.firstChild.data
 pwd = get_pwd.firstChild.data
 dbn = get_db.firstChild.data
 host = get_host.firstChild.data
-
+log = open("myprog.log", "a")
+sys.stdout = log
 
 
 db = mysql.connector.connect(user=user, password=pwd,
