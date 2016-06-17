@@ -10,12 +10,14 @@
 		<title>Employee Report</title>
 		<sql>select * from employees</sql>
 		<location>/Users/atharvapatil/Desktop/testing/demo.xlsx</location>
+		<reciever>bhedakaran1@gmail.com,atharvapatil1996@gmail.com</reciever>
 	</major>
 	
 	<major>
 		<title>Students Report</title>
 		<sql>select * from students</sql>
 		<location>/Users/atharvapatil/Desktop/hello.xlsx</location>
+		<reciever>bhedakaran1@gmail.com,atharvapatil1996@gmail.com,atharvapatil1996@outlook.com</reciever>
 	</major>
 	
 </sqlquery>
