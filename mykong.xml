@@ -1,23 +1,38 @@
 <?xml version="1.0"?>
-<sqlquery>
-	<connection>
+<input_details>
+	<!-- Enter the platform for your system - windows, osx or linux -->
+	<platform>
+		<system>windows</system>
+	</platform>
+	<!-- Enter the database connection detials - user, password, host and database -->
+	<dbconnection>
 		<user>atharva</user>
 		<password>atharva123</password>
 		<host>localhost</host>
 		<dbname>squareinch</dbname>
-	</connection>
-	<major>
+	</dbconnection>
+	<!-- Enter your email-id,password, smtp and port details to activate mailing services -->
+	<mailer>
+		<sender>atharvapatil8513@gmail.com</sender>
+		<pwd>8425959435123</pwd>
+		<smtp>smtp.gmail.com</smtp>
+		<port>587</port>
+
+	</mailer>
+	<!-- Enter the reports with title, sql queries (i.e. to be fired), location of excel file (where it is to be saved) and recievrs (to whom the file is to be mailed,)-->
+	<!-- please note multiple recievers to be mentioned as comma seperated values for eg. person1@domain.com. person2@domain.com -->
+	<report>
 		<title>Employee Report</title>
 		<sql>select * from employees</sql>
-		<location>/Users/atharvapatil/Desktop/testing/demo.xlsx</location>
-		<reciever>bhedakaran1@gmail.com,atharvapatil1996@gmail.com</reciever>
-	</major>
+		<location>C:\xampp\htdocs\squareinch\demo.xlsx</location>
+		<reciever>atharvapatil1996@outlook.com</reciever>
+	</report>
 	
-	<major>
+	<report>
 		<title>Students Report</title>
 		<sql>select * from students</sql>
-		<location>/Users/atharvapatil/Desktop/hello.xlsx</location>
-		<reciever>bhedakaran1@gmail.com,atharvapatil1996@gmail.com,atharvapatil1996@outlook.com</reciever>
-	</major>
+		<location>C:\xampp\htdocs\squareinch\hello.xlsx</location>
+		<reciever>atharvapatil1996@outlook.com</reciever>
+	</report>
 	
-</sqlquery>
+</input_details>
