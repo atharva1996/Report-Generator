@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<input_details>
+	<!-- Enter the platform for your system - windows, osx or linux -->
+	<platform>
+		<system>WINDOWS</system>
+	</platform>
+	<!-- Enter the database connection detials - user, password, host and database -->
+	<dbconnection>
+		<user>atharva</user>
+		<password>atharva123</password>
+		<host>localhost</host>
+		<dbname>squareinch</dbname>
+	</dbconnection>
+	<!-- Enter your email-id,password, smtp and port details to activate mailing services -->
+	<mailer>
+		<sender>atharvapatil1996@gmail.com</sender>
+		<pwd>Atharva123!</pwd>
+		<smtp>smtp.gmail.com</smtp>
+		<port>587</port>
+
+	</mailer>
+	<!-- Enter the reports with title, sql queries (i.e. to be fired), location of excel file (where it is to be saved) and recievrs (to whom the file is to be mailed,)-->
+	<!-- Set the flag to 1 if you want to send a mail of the report or else 0 -->
+	<!-- please note multiple recievers to be mentioned as comma seperated values for eg. person1@domain.com. person2@domain.com -->
+	<report>
+		<title>Employee Report</title>
+		<sql>select * from employees</sql>
+		<location>C:\xampp\htdocs\squareinch\demo.xlsx</location>
+		<flag>1</flag>
+		<reciever>atharvapatil1996@outlook.com</reciever>
+	</report>
+	
+	<report>
+		<title>Students Report</title>
+		<sql>select * from students</sql>
+		<location>C:\xampp\htdocs\squareinch\hello.xlsx</location>
+		<flag>1</flag>
+		<reciever>bhedakaran1@gmail.com</reciever>
+	</report>
+	
+</input_details>
