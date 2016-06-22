@@ -35,18 +35,38 @@ print "--------------------------- Scheduled execution of code began : " + st + 
 #----------------------------------------------------------------------------------------------------
 #parsing the xml document
 doc = minidom.parse("report_details.xml")
+reports = doc.getElementsByTagName("report")
 
 #getting platform details of system
 get_platform = doc.getElementsByTagName("system")[0]
 platform = get_platform.firstChild.data
 platform = platform.lower()
 
-#getting senders detail to send mail
+#getting senders detail to establishment connection and send the mail
 get_sender_addr= doc.getElementsByTagName("sender")[0]
 get_sender_pwd= doc.getElementsByTagName("pwd")[0]
 get_smtp = doc.getElementsByTagName("smtp")[0]
 get_port= doc.getElementsByTagName("port")[0]
+fromaddr = get_sender_addr.firstChild.data
+msg_pwd = get_sender_pwd.firstChild.data
+port = get_port.firstChild.data
+msg_smtp = get_smtp.firstChild.data
 
+
+#Establish connection in order to mail if we require mailing system
+mail_flag = 0
+for report in reports:
+  get_send_mail = report.getElementsByTagName("send_mail")[0]
+  send_mail = get_send_mail.firstChild.data
+  send_mail = send_mail.lower()
+  if send_mail == 'y':
+    break
+
+if send_mail == 'y':
+  server = smtplib.SMTP(msg_smtp, int(port))
+  server.starttls()
+  server.login(fromaddr, msg_pwd)
+  mail_flag = 1
 #-----------------------------------------------------------------------------------------------
 
 
@@ -54,7 +74,7 @@ get_port= doc.getElementsByTagName("port")[0]
 
 #mailer function to send mails with attachment
 def mailing_system(reciepent,loc,heading):
-  fromaddr = get_sender_addr.firstChild.data
+  
   reciever = reciepent
   toaddr = reciever.split(',')
   location = loc
@@ -66,10 +86,13 @@ def mailing_system(reciepent,loc,heading):
   filename = larray[0]
   msg = MIMEMultipart()
   
+  msg['From'] = fromaddr
+  msg['To'] = reciever
+  ts = time.time()
+  st = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
+  msg['Sent'] = st
   msg['Subject'] = heading
-  msg_pwd = get_sender_pwd.firstChild.data
-  port = get_port.firstChild.data
-  msg_smtp = get_smtp.firstChild.data
+  
 
   body = "Hi, please find the attachments below. Thanks :D"           #body text of the message
  
@@ -84,22 +107,20 @@ def mailing_system(reciepent,loc,heading):
  
   msg.attach(part)
  
-  server = smtplib.SMTP(msg_smtp, int(port))
-  server.starttls()
-  server.login(fromaddr, msg_pwd)
+  
   text = msg.as_string()
   server.sendmail(fromaddr, toaddr, text)
   ts = time.time()
   st = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y %H:%M:%S')
   print "A mail with attachment " + filename + " has been sent at  " + st
-  server.quit()
+  
  
 #--------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------
 
 #gets database connection details
-reports = doc.getElementsByTagName("report")
+
 
 get_user = doc.getElementsByTagName("user")[0]
 get_pwd = doc.getElementsByTagName("password")[0]
@@ -125,6 +146,11 @@ cursor = db.cursor()
 
 #gets the report details and starts writing to excel sheet
 for report in reports:
+  get_fire_sql = report.getElementsByTagName("fire_sql")[0]
+  fire_sql = get_fire_sql.firstChild.data
+  fire_sql=fire_sql.lower()
+  if fire_sql == "n":
+    continue
 
   title = report.getElementsByTagName("title")[0]
   heading = title.firstChild.data
@@ -134,9 +160,9 @@ for report in reports:
   query=sql.firstChild.data 
   reciever = report.getElementsByTagName("reciever")[0]
   reciepent = reciever.firstChild.data
-  get_flag = report.getElementsByTagName("flag")[0]
-  flag = get_flag.firstChild.data
-
+  get_send_mail = report.getElementsByTagName("send_mail")[0]
+  send_mail = get_send_mail.firstChild.data
+  send_mail = send_mail.lower()
   try:  
 
           
@@ -148,7 +174,7 @@ for report in reports:
           result = cursor.fetchall()
         
           field_names = [i[0] for i in cursor.description]
-
+          
           #----------------------------------------------------------------------------------
 
           #creating the workbook at the given location and creating its sheet
@@ -158,37 +184,46 @@ for report in reports:
 
           #defining the formnat of the excel sheet created
         
-          bold = workbook.add_format({'bold': True})
-          date_format = workbook.add_format({'num_format': 'mmmm d yyyy'})
-          time_format = workbook.add_format({'num_format': 'hh:mm:ss'})
-          timestamp_format = workbook.add_format({'num_format': 'dd/mm/yy hh:mm:ss'})
-          format = workbook.add_format()
+          date_format = workbook.add_format({'text_wrap':1,'align':'left','valign':'top','num_format': 'mmmm d yyyy'})
+          time_format = workbook.add_format({'text_wrap':1,'align':'left','valign':'top','num_format': 'hh:mm:ss'})
+          timestamp_format = workbook.add_format({'text_wrap':1,'align':'left','valign':'top','num_format': 'dd/mm/yy hh:mm:ss'})
+          format = workbook.add_format({'text_wrap':1,'align':'left','valign':'top'})
+          format_text = workbook.add_format({'text_wrap':1,'align':'left','valign':'top'})
+
           size = workbook.add_format()
           align = workbook.add_format()
+          bold = workbook.add_format({'bold': True})          
+
           format.set_border()
           date_format.set_border()
           time_format.set_border()
           timestamp_format.set_border()
+          format_text.set_border()
           align.set_border()
+
+          size.set_font_size(20)
+
           format.set_bg_color('cyan')
-          size.set_font_size(20)  
+            
           align.set_align('left')
           date_format.set_align('left')
           time_format.set_align('left')
+          
           timestamp_format.set_align('left')
+          
           format.set_bold()
 
           
           worksheet.write(0,0,heading,size)               #writing the sheet title to excel sheet
 
           
-          worksheet.set_column(0,6,10)                    #adjusting the column size as required
-          
+          worksheet.set_column(0,20,20)                    #adjusting the column size as required
+          worksheet.set_default_row(45)                    #adjusting the row size for all the rows
 
 
           #writing the table headings to excel sheet with formatting
 
-          row=1
+          row=2
           col=0
           j = 0
           for rows in field_names:
@@ -215,7 +250,7 @@ for report in reports:
 
                 else:
                   
-                  worksheet.write(row,col,result[n][col],align)
+                  worksheet.write(row,col,result[n][col],format_text)
 
                 col = col + 1
             n = n+1
@@ -225,7 +260,7 @@ for report in reports:
           #--------------------------------------------------------------------------------
 
           #calling the mailer function to send mail with attachment
-          if int(flag) == 1:
+          if send_mail == "y":
             mailing_system(reciepent,loc,heading)      
 
           #-----------------------------------------------------------------------------------
@@ -239,8 +274,9 @@ for report in reports:
         
 #--------------------------------------------------------------------------------------------    
       
-#This marks the end of the code execution
-
+#This marks the end of the code execution and we close the mail connection, workbook and database connection
+if int(mail_flag) == 1:
+ server.quit()
 workbook.close()
 db.close()
 ts = time.time()
